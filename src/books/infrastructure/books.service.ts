@@ -1,68 +1,46 @@
 import { Injectable } from '@nestjs/common';
-import { Book } from '../interfaces/categories.interface';
+import { Book, GridDataResponse } from '../interfaces/categories.interface';
+import { BOOKS } from 'src/mock/books-database';
 
 @Injectable({})
 export class BookService {
-  BOOKS: Book[] = [
-    {
-      pagesNumber: 1000,
-      title: 'Summa Theologies',
-      stock: 3,
-      genre: 'Philosophy',
-      author: 'Saint Thomas Aquinas',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 300,
-      title: 'Metaphysics',
-      stock: 30,
-      genre: 'Philosophy',
-      author: 'Aristotle',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 200,
-      title: 'History of Spain',
-      stock: 2,
-      genre: 'History',
-      author: 'Pio Moa',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 120,
-      title: 'Napoleon',
-      stock: 10,
-      genre: 'Biographic',
-      author: 'Jean Pierre',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 620,
-      title: 'Lenin',
-      stock: 0,
-      genre: 'Biographic',
-      author: 'A bulgarian',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 120,
-      title: 'Trotsky',
-      stock: 1,
-      genre: 'Biographic',
-      author: 'A Ukranian',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 120,
-      title: 'The Republic',
-      stock: 133,
-      genre: 'Phylosophie',
-      author: 'Plato',
-      image: 'image-test-product.jpg',
-    },
-  ];
+  private readonly DATABASE_BOOKS: Book[] = BOOKS;
 
-  getAllBooks(): Book[] {
-    return this.BOOKS
+  /**
+   * Makes a search in the database for books that match with the param
+   * @param name
+   * @returns
+   */
+  searchBooks(name?: string): GridDataResponse {
+    let books: Book[] = name
+      ? this.getBooksThatMatch(name)
+      : this.getAllBooks();
+    //Returns a respose withzz
+    return {
+      metadata: {
+        totalProducts: books.length,
+        currentPage: 0,
+        totalPages: 0,
+        searchString: '',
+      },
+      books: books,
+    };
+  }
+  /**
+   * Return a list with all the books of the database
+   * @returns
+   */
+  private getAllBooks(): Book[] {
+    return this.DATABASE_BOOKS;
+  }
+  /**
+   * Return a list with all the books that matches with the param
+   * @param name
+   * @returns
+   */
+  private getBooksThatMatch(name: string): Book[] {
+    return this.DATABASE_BOOKS.filter((book) =>
+      book.title.toUpperCase().includes(name.toUpperCase()),
+    );
   }
 }
