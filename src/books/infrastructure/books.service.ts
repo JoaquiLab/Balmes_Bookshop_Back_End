@@ -7,12 +7,13 @@ export class BookService {
   private readonly BOOKS = DATABASE_BOOKS;
 
   getBooks(name: string = '', sortType: number = 1): Book[] {
-
     let bookList: Book[] = [];
     if (name === '') {
       bookList = this.BOOKS;
     } else {
-      bookList = this.BOOKS.filter((book) => book.title.includes(name));
+      bookList = this.BOOKS.filter((book) =>
+        book.title.toUpperCase().includes(name.toUpperCase()),
+      );
     }
     //Apply the sortType
     const sortedList = this.sortBooks(bookList, sortType);
