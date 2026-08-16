@@ -1,0 +1,11 @@
+
+services:
+  backend-server:
+    build:
+      context: .
+    environment:
+      - ENV_NODE=develop
+    ports:
+      - 3000:3000
+
+

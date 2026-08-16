@@ -3,8 +3,10 @@ export interface Book {
   title: string;
   stock: number;
   genre: string;
+  onSaleDate: Date;
   author: string;
   image: string;
+  price: number
 }
 export interface SearchMetadata {
   totalProducts: number;
@@ -14,6 +16,10 @@ export interface SearchMetadata {
 }
 
 export interface GridDataResponse {
-  metadata: SearchMetadata;
   books: Book[];
+}
+export enum Order {
+  HIGH_PRICE = 1,
+  LOW_PRICE = 2,
+  LATEST = 3,
 }

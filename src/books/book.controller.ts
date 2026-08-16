@@ -1,7 +1,7 @@
-import { Get, Query, Controller, Inject } from '@nestjs/common';
+import { Get, Query, Controller, ParseIntPipe } from '@nestjs/common';
 import type { Book, GridDataResponse } from './interfaces/categories.interface';
 import { BookService } from './infrastructure/books.service';
-import { EXAMPLE_DATA } from 'src/mock/categories-database';
+import { EXAMPLE_DATA } from 'src/mock/books-cathegory-database';
 import { CategoryTreeNode } from 'src/categories/interfaces/categories.interface';
 
 @Controller('books')
@@ -16,8 +16,12 @@ export class BookController {
    * @returns
    */
   @Get()
-  findAll(@Query('name') name: string): GridDataResponse {
-    return this.bookService.searchBooks(name);
+  withAll(
+    @Query('name') name: string,
+    @Query('sortType', ParseIntPipe) sortType: number,
+  ): GridDataResponse {
+    const books: Book[] = this.bookService.getBooks(name, sortType);
+    return { books };
   }
 
   /**

@@ -1,46 +1,54 @@
 import { Injectable } from '@nestjs/common';
-import { Book, GridDataResponse } from '../interfaces/categories.interface';
-import { BOOKS } from 'src/mock/books-database';
+import { Book } from '../interfaces/categories.interface';
+import { DATABASE_BOOKS } from 'src/mock/books-database';
 
 @Injectable({})
 export class BookService {
-  private readonly DATABASE_BOOKS: Book[] = BOOKS;
+  private readonly BOOKS = DATABASE_BOOKS;
+
+  getBooks(name: string = '', sortType: number = 1): Book[] {
+
+    let bookList: Book[] = [];
+    if (name === '') {
+      bookList = this.BOOKS;
+    } else {
+      bookList = this.BOOKS.filter((book) => book.title.includes(name));
+    }
+    //Apply the sortType
+    const sortedList = this.sortBooks(bookList, sortType);
+    return sortedList;
+  }
 
   /**
-   * Makes a search in the database for books that match with the param
-   * @param name
-   * @returns
+   * Function to sort a list in 3 differents ways:
+   * - 1 High Price to low price
+   * - 2 Low Price to high price
+   * - 3 newest to lowest
+   * @param bookList
+   * @param sortType
    */
-  searchBooks(name?: string): GridDataResponse {
-    let books: Book[] = name
-      ? this.getBooksThatMatch(name)
-      : this.getAllBooks();
-    //Returns a respose withzz
-    return {
-      metadata: {
-        totalProducts: books.length,
-        currentPage: 0,
-        totalPages: 0,
-        searchString: '',
-      },
-      books: books,
-    };
-  }
-  /**
-   * Return a list with all the books of the database
-   * @returns
-   */
-  private getAllBooks(): Book[] {
-    return this.DATABASE_BOOKS;
-  }
-  /**
-   * Return a list with all the books that matches with the param
-   * @param name
-   * @returns
-   */
-  private getBooksThatMatch(name: string): Book[] {
-    return this.DATABASE_BOOKS.filter((book) =>
-      book.title.toUpperCase().includes(name.toUpperCase()),
-    );
+  sortBooks(bookList: Book[], sortType: number): Book[] {
+    //High price to Low price
+    if (sortType === 1) {
+      bookList.sort((a, b) => {
+        return a.price - b.price;
+      });
+    }
+    //Low price to High price
+    else if (sortType === 2) {
+      bookList.sort((a, b) => {
+        return b.price - a.price;
+      });
+    }
+    //New to old
+    else {
+      bookList.sort((a, b) => {
+        if (a.onSaleDate === b.onSaleDate) return 0;
+        else if (a.onSaleDate < b.onSaleDate) return -1;
+        else return 1;
+      });
+    }
+
+    return bookList;
   }
 }
