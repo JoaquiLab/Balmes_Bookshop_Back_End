@@ -1,19 +1,19 @@
-import { Get, Query, Controller, Inject } from '@nestjs/common';
+import { Get, Query, Controller, ParseIntPipe } from '@nestjs/common';
 import type { Book, GridDataResponse } from './interfaces/categories.interface';
 import { BookService } from './infrastructure/books.service';
-import { EXAMPLE_DATA } from 'src/mock/books-database';
+import { EXAMPLE_DATA } from 'src/mock/books-cathegory-database';
 import { CategoryTreeNode } from 'src/categories/interfaces/categories.interface';
 
 @Controller('books')
 export class BookController {
   categories: CategoryTreeNode[] = EXAMPLE_DATA;
-  constructor(private readonly bookService: BookService){}
+  constructor(private readonly bookService: BookService) {}
 
   /**
    * /books
    * /books?name=<book name>
-   * @param name 
-   * @returns 
+   * @param name
+   * @returns
    */
   @Get()
   withAll(
@@ -21,7 +21,6 @@ export class BookController {
     @Query('sortType', ParseIntPipe) sortType: number,
   ): GridDataResponse {
     const books: Book[] = this.bookService.getBooks(name, sortType);
-    this.logger.log('Entry in book findAll')
     return { books };
   }
 
@@ -29,10 +28,7 @@ export class BookController {
    * /books/categoryTree
    */
   @Get('categories')
-  findCategories(): CategoryTreeNode[]{
-    return this.categories
+  findCategories(): CategoryTreeNode[] {
+    return this.categories;
   }
 }
-
-
-
