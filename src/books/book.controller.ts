@@ -16,31 +16,13 @@ export class BookController {
    * @returns 
    */
   @Get()
-  findAll(@Query('name') name: string): GridDataResponse {
-    const books: Book[] = this.bookService.getAllBooks();
-    if (name == '') {
-      return {
-        metadata: {
-          totalProducts: books.length,
-          currentPage: 0,
-          totalPages: 0,
-          searchString: '',
-        },
-        books: books,
-      };
-    }
-    const filteredBooks = books.filter((book) =>
-      book.title.toLowerCase().includes(name.toLowerCase()),
-    );
-    return {
-      books: filteredBooks,
-      metadata: {
-        totalProducts: filteredBooks.length,
-        currentPage: 0,
-        totalPages: 0,
-        searchString: '',
-      },
-    };
+  withAll(
+    @Query('name') name: string,
+    @Query('sortType', ParseIntPipe) sortType: number,
+  ): GridDataResponse {
+    const books: Book[] = this.bookService.getBooks(name, sortType);
+    this.logger.log('Entry in book findAll')
+    return { books };
   }
 
   /**
