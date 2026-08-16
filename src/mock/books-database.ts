@@ -1,43 +1,74 @@
-import { CategoryTreeNode } from "src/categories/interfaces/categories.interface";
+import { Book } from "src/books/interfaces/categories.interface";
 
-export const EXAMPLE_DATA: CategoryTreeNode[] = [
-  {
-    name: 'Los imprescindibles',
-    children: [{ name: 'Apple' }, { name: 'Banana' }, { name: 'Fruit loops' }],
-  },
-  {
-    name: 'Religión',
-    children: [
-      {
-        name: 'Catequesis',
-      },
-      {
-        name: 'Historia de la iglesia',
-      },
-    ],
-  },
-  {
-    name: 'Humanidades',
-    children: [
-      {
-        name: 'Green',
-        children: [{ name: 'Broccoli' }, { name: 'Brussels sprouts' }],
-      },
-      {
-        name: 'Ciencias Naturales',
-        children: [
-          {
-            name: 'Bioetica',
-          },
-          {
-            name: 'Evolucionismo',
-          },
-          {
-            name: 'Salud',
-          },
-        ],
-      },
-    ],
-  },
-];
-
+export const DATABASE_BOOKS: Book[] = [
+    {
+      pagesNumber: 1001,
+      title: 'Summa Theologies',
+      stock: 380,
+      onSaleDate: new Date('1500-07-18T12:00:02+00:00'),
+      price: 20,
+      genre: 'Philosophy',
+      author: 'Saint Thomas Aquinas',
+      image: 'image-test-product.jpg',
+    },
+    {
+      pagesNumber: 300,
+      title: 'Metaphysics',
+      stock: 25,
+      onSaleDate: new Date('0001-07-18T12:00:02+00:00'),
+      price: 20,
+      genre: 'Philosophy',
+      author: 'Aristotle',
+      image: 'image-test-product.jpg',
+    },
+    {
+      pagesNumber: 200,
+      title: 'History of Spain',
+      stock: 20,
+      onSaleDate: new Date(new Date().toISOString()),
+      price: 20,
+      genre: 'History',
+      author: 'Pio Moa',
+      image: 'image-test-product.jpg',
+    },
+    {
+      pagesNumber: 120,
+      title: 'Napoleon',
+      stock: 10,
+      onSaleDate: new Date(new Date().toISOString()),
+      price: 20,
+      genre: 'Biographic',
+      author: 'Jean Pierre',
+      image: 'image-test-product.jpg',
+    },
+    {
+      pagesNumber: 620,
+      title: 'Lenin',
+      stock: 0,
+      onSaleDate: new Date(new Date().toISOString()),
+      price: 100,
+      genre: 'Biographic',
+      author: 'A bulgarian',
+      image: 'image-test-product.jpg',
+    },
+    {
+      pagesNumber: 120,
+      title: 'Trotsky',
+      stock: 1,
+      onSaleDate: new Date(new Date().toISOString()),
+      price: 20,
+      genre: 'Biographic',
+      author: 'A Ukranian',
+      image: 'image-test-product.jpg',
+    },
+    {
+      pagesNumber: 120,
+      title: 'The Republic',
+      stock: 1330,
+      onSaleDate: new Date(new Date().toISOString()),
+      price: 20,
+      genre: 'Phylosophie',
+      author: 'Plato',
+      image: 'image-test-product.jpg',
+    },
+  ];
