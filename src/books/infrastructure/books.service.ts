@@ -1,68 +1,54 @@
 import { Injectable } from '@nestjs/common';
 import { Book } from '../interfaces/categories.interface';
+import { DATABASE_BOOKS } from 'src/mock/books-database';
 
 @Injectable({})
 export class BookService {
-  BOOKS: Book[] = [
-    {
-      pagesNumber: 1000,
-      title: 'Summa Theologies',
-      stock: 3,
-      genre: 'Philosophy',
-      author: 'Saint Thomas Aquinas',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 300,
-      title: 'Metaphysics',
-      stock: 30,
-      genre: 'Philosophy',
-      author: 'Aristotle',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 200,
-      title: 'History of Spain',
-      stock: 2,
-      genre: 'History',
-      author: 'Pio Moa',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 120,
-      title: 'Napoleon',
-      stock: 10,
-      genre: 'Biographic',
-      author: 'Jean Pierre',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 620,
-      title: 'Lenin',
-      stock: 0,
-      genre: 'Biographic',
-      author: 'A bulgarian',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 120,
-      title: 'Trotsky',
-      stock: 1,
-      genre: 'Biographic',
-      author: 'A Ukranian',
-      image: 'image-test-product.jpg',
-    },
-    {
-      pagesNumber: 120,
-      title: 'The Republic',
-      stock: 133,
-      genre: 'Phylosophie',
-      author: 'Plato',
-      image: 'image-test-product.jpg',
-    },
-  ];
+  private readonly BOOKS = DATABASE_BOOKS;
 
-  getAllBooks(): Book[] {
-    return this.BOOKS
+  getBooks(name: string = '', sortType: number = 1): Book[] {
+
+    let bookList: Book[] = [];
+    if (name === '') {
+      bookList = this.BOOKS;
+    } else {
+      bookList = this.BOOKS.filter((book) => book.title.includes(name));
+    }
+    //Apply the sortType
+    const sortedList = this.sortBooks(bookList, sortType);
+    return sortedList;
+  }
+
+  /**
+   * Function to sort a list in 3 differents ways:
+   * - 1 High Price to low price
+   * - 2 Low Price to high price
+   * - 3 newest to lowest
+   * @param bookList
+   * @param sortType
+   */
+  sortBooks(bookList: Book[], sortType: number): Book[] {
+    //High price to Low price
+    if (sortType === 1) {
+      bookList.sort((a, b) => {
+        return a.price - b.price;
+      });
+    }
+    //Low price to High price
+    else if (sortType === 2) {
+      bookList.sort((a, b) => {
+        return b.price - a.price;
+      });
+    }
+    //New to old
+    else {
+      bookList.sort((a, b) => {
+        if (a.onSaleDate === b.onSaleDate) return 0;
+        else if (a.onSaleDate < b.onSaleDate) return -1;
+        else return 1;
+      });
+    }
+
+    return bookList;
   }
 }
