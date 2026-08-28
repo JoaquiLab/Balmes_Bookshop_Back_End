@@ -2,9 +2,7 @@ import { Controller, Get, NotFoundException, Query } from '@nestjs/common';
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
 import type { User } from './interfaces/user-interface'
 
-/**
- * Business logic of the USERS entity
- */
+
 @Controller('users')
 export class UsersController {
   datababase: User[] = [
