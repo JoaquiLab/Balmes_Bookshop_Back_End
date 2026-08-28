@@ -1,13 +1,10 @@
 import { Controller, Get, NotFoundException, Query } from '@nestjs/common';
 import { ExceptionsHandler } from '@nestjs/core/exceptions/exceptions-handler';
+import type { User } from './interfaces/user-interface'
 
-export interface User {
-  id: string;
-  email: string;
-  password: string;
-  token: string;
-}
-
+/**
+ * Business logic of the USERS entity
+ */
 @Controller('users')
 export class UsersController {
   datababase: User[] = [
